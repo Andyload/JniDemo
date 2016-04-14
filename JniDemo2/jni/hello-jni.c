@@ -16,8 +16,10 @@
  */
 #include <string.h>
 #include <jni.h>
+#include <stdio.h>
 #include "hello-jni.h"
 #include "include/Utils.h"
+#include "my_log.h"
 
 /* This is a trivial JNI example where we use a native method
  * to return a new VM String. See the corresponding Java source
@@ -38,5 +40,29 @@ Java_com_qzi_jnidemo2_Utils_add( JNIEnv* env,jobject thiz,jint a,jint b)
     int aa =a;
     int bb = b;
     return (jint)qq_add(aa,bb);
+}
+
+jboolean Java_com_qzi_jnidemo2_Utils_createFile( JNIEnv* env,jobject thiz,jstring sPath)
+{
+	const char* s_path = (*env)->GetStringUTFChars(env,sPath,NULL);
+	MY_LOG_INFO("openfile_%s",s_path);
+	FILE* f_stream = fopen(s_path,"w+");
+	if(NULL == f_stream)
+	{
+		return 0;
+	}
+	else
+	{
+		if(EOF == fputs("hello\n",f_stream))
+		{
+
+		}
+		else
+		{
+			fflush(f_stream);
+			f_stream = NULL;
+		}
+		return 1;
+	}
 }
 

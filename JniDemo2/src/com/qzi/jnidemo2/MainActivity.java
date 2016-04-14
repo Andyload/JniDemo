@@ -1,7 +1,10 @@
 package com.qzi.jnidemo2;
 
+import java.io.File;
+
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +34,8 @@ public class MainActivity extends ActionBarActivity {
             int num_a = Integer.parseInt(editText_a.getText().toString().trim());
             int num_b = Integer.parseInt(editText_b.getText().toString().trim());
             showView.setText("和为： "+utils.add(num_a,num_b));
+            String filePath = Environment.getExternalStorageDirectory()+File.separator+"qq.txt";
+            utils.createFile(filePath);
         }catch (NumberFormatException e){
             e.printStackTrace();
             Toast.makeText(this,"请输入数字",Toast.LENGTH_SHORT).show();

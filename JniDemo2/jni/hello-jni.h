@@ -23,4 +23,5 @@
 #include <jni.h>
 jstring Java_com_qzi_jnidemo2_Utils_GetText( JNIEnv* env,jobject thiz);
 jint Java_com_qzi_jnidemo2_Utils_add( JNIEnv* env,jobject thiz,jint a,jint b);
+jboolean Java_com_qzi_jnidemo2_Utils_createFile( JNIEnv* env,jobject thiz,jstring sPath);
 #endif
