@@ -32,10 +32,8 @@ static jint Hello_calculate(JNIEnv* env,jobject thiz,jstring calculate,jint math
 	Hello* he = (Hello*)env->GetIntField(thiz,helloFieldID);
 	if(he == NULL)
 		return -1;
-	int n_math = math;
-	int n_math2 = math2;
 	const char* cal = env->GetStringUTFChars(calculate,NULL);
-	int result = he->calculate(cal,n_math,n_math2);
+	int result = he->calculate(cal,math,math2);
 	env->ReleaseStringUTFChars(calculate,cal);
 	return (jint)result;
 }
