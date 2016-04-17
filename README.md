@@ -1,4 +1,4 @@
 # JniDemo
 To demo that develop application with NDK(C++).
 
-this is basic framework for developing native source.
+This is a basic framework for developing native source.
