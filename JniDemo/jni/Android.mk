@@ -12,5 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+include jni/static/Android.mk
 include jni/android/Android.mk
 include jni/player/Android.mk

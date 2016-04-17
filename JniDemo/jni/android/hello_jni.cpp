@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "hello.h"
+#include "utf8ncpy.h"
 
 jfieldID helloFieldID;
 
@@ -23,8 +24,13 @@ static jstring Hello_stringFromJNI(JNIEnv* env,jobject thiz)
 {
 	Hello* he = (Hello*)env->GetIntField(thiz,helloFieldID);
 	if(he == NULL)
-		return env->NewStringUTF("error");
-	return env->NewStringUTF(he->stringFromJNI());
+		return NULL;
+	char* jni_str = (char*)he->stringFromJNI();
+	size_t size = strlen(jni_str);
+	jchar* data = UTF8toUTF16((char*)jni_str,&size);
+	jstring str = env->NewString(data,size);
+	free(data);
+	return str;
 }
 
 static jint Hello_calculate(JNIEnv* env,jobject thiz,jstring calculate,jint math,jint math2)
@@ -32,9 +38,12 @@ static jint Hello_calculate(JNIEnv* env,jobject thiz,jstring calculate,jint math
 	Hello* he = (Hello*)env->GetIntField(thiz,helloFieldID);
 	if(he == NULL)
 		return -1;
-	const char* cal = env->GetStringUTFChars(calculate,NULL);
-	int result = he->calculate(cal,math,math2);
-	env->ReleaseStringUTFChars(calculate,cal);
+	const jchar* cal = env->GetStringChars(calculate,NULL);
+	jsize cal_size = env->GetStringLength(calculate);
+	char* cal2 = UTF16toUTF8((jchar*)cal,(size_t*)&cal_size);
+	int result = he->calculate(cal2,math,math2);
+	env->ReleaseStringChars(calculate,cal);
+	free(cal2);
 	return (jint)result;
 }
 

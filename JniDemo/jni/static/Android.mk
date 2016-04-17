@@ -12,13 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-LOCAL_PATH := $(call my-dir)/..
+LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE    := business
-LOCAL_SRC_FILES := android/hello_jni.cpp android/fileutils_jni.cpp business/fileutils.cpp business/hello.cpp business/utf8ncpy.cpp
+LOCAL_MODULE    := iconv
+LOCAL_SRC_FILES := libiconv.a
 
-LOCAL_C_INCLUDES := $(LOCAL_PATH) $(LOCAL_PATH)/business $(LOCAL_PATH)/iconv
-
-include $(BUILD_STATIC_LIBRARY)
+include $(PREBUILT_STATIC_LIBRARY)

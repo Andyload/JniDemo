@@ -19,7 +19,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE    := hello-jni
 LOCAL_SRC_FILES := main.cpp 
 
-LOCAL_STATIC_LIBRARIES := business
+LOCAL_STATIC_LIBRARIES := business iconv
 
 LOCAL_LDLIBS += -llog
 

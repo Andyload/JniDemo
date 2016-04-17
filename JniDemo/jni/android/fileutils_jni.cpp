@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "fileutils.h"
 #include "my_log.h"
+#include "utf8ncpy.h"
 
 jfieldID fileUtilsFieldID;
 
@@ -25,11 +26,18 @@ static jboolean FileUtils_copy(JNIEnv* env,jobject thiz,jstring firstPath,jstrin
 	FileUtils* fileUtils = (FileUtils*)env->GetIntField(thiz,fileUtilsFieldID);
 	if(fileUtils == NULL)
 		return -1;
-	const char* s_filePath = env->GetStringUTFChars(firstPath,NULL);
-	const char* s_copyPath = env->GetStringUTFChars(copyPath,NULL);
-	bool ret = fileUtils->copy(s_filePath,s_copyPath);
-	env->ReleaseStringUTFChars(firstPath,s_filePath);
-	env->ReleaseStringUTFChars(copyPath,s_copyPath);
+	const jchar* j_file = env->GetStringChars(firstPath,NULL);
+	jsize f_size = env->GetStringLength(firstPath);
+	char* s_file = UTF16toUTF8((jchar*)j_file,(size_t*)&f_size);
+
+	const jchar* j_cp = env->GetStringChars(copyPath,NULL);
+	jsize f_size2 = env->GetStringLength(copyPath);
+	char* s_cp_file = UTF16toUTF8((jchar*)j_cp,(size_t*)&f_size2);
+	bool ret = fileUtils->copy(s_file,s_cp_file);
+	env->ReleaseStringChars(firstPath,j_file);
+	env->ReleaseStringChars(copyPath,j_cp);
+	free(s_file);
+	free(s_cp_file);
 	return ret;
 }
 
@@ -38,11 +46,18 @@ static jboolean FileUtils_move(JNIEnv* env,jobject thiz,jstring firstPath,jstrin
 	FileUtils* fileUtils = (FileUtils*)env->GetIntField(thiz,fileUtilsFieldID);
 	if(fileUtils == NULL)
 		return -1;
-	const char* s_filePath = env->GetStringUTFChars(firstPath,NULL);
-	const char* s_copyPath = env->GetStringUTFChars(copyPath,NULL);
-	bool ret = fileUtils->move(s_filePath,s_copyPath);
-	env->ReleaseStringUTFChars(firstPath,s_filePath);
-	env->ReleaseStringUTFChars(copyPath,s_copyPath);
+	const jchar* j_file = env->GetStringChars(firstPath,NULL);
+	jsize f_size = env->GetStringLength(firstPath);
+	char* s_file = UTF16toUTF8((jchar*)j_file,(size_t*)&f_size);
+
+	const jchar* j_cp = env->GetStringChars(copyPath,NULL);
+	jsize f_size2 = env->GetStringLength(copyPath);
+	char* s_cp_file = UTF16toUTF8((jchar*)j_cp,(size_t*)&f_size2);
+	bool ret = fileUtils->copy(s_file,s_cp_file);
+	env->ReleaseStringChars(firstPath,j_file);
+	env->ReleaseStringChars(copyPath,j_cp);
+	free(s_file);
+	free(s_cp_file);
 	return ret;
 }
 
@@ -51,9 +66,12 @@ static jboolean FileUtils_createFile(JNIEnv* env,jobject thiz,jstring filePath)
 	FileUtils* fileUtils = (FileUtils*)env->GetIntField(thiz,fileUtilsFieldID);
 	if(fileUtils == NULL)
 		return -1;
-	const char* s_filePath = env->GetStringUTFChars(filePath,NULL);
+	const jchar* jFilePath = env->GetStringChars(filePath,NULL);
+	jsize j_size = env->GetStringLength(filePath);
+	char* s_filePath = UTF16toUTF8((jchar*)jFilePath,(size_t*)&j_size);
 	bool ret = fileUtils->createFile(s_filePath);
-	env->ReleaseStringUTFChars(filePath,s_filePath);
+	env->ReleaseStringChars(filePath,jFilePath);
+	free(s_filePath);
 	return ret;
 }
 
