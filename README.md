@@ -1,2 +1,4 @@
 # JniDemo
-just to keep that how to user other's dynamic library(.so)  to link my native library(.so)
+To demo that develop application with NDK(C++).
+
+this is basic framework for developing native source.
